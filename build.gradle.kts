@@ -22,6 +22,8 @@ dependencies {
     implementation("io.quarkus:quarkus-arc")
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.3")
     testImplementation("io.quarkus:quarkus-junit5")
+    testImplementation("io.mockk:mockk:1.13.2")
+    testImplementation("io.quarkiverse.mockk:quarkus-junit5-mockk:1.1.1")
 }
 
 group = "com.zijian"
@@ -35,6 +37,7 @@ java {
 tasks.withType<Test> {
     systemProperty("java.util.logging.manager", "org.jboss.logmanager.LogManager")
 }
+
 allOpen {
     annotation("javax.ws.rs.Path")
     annotation("javax.enterprise.context.ApplicationScoped")
