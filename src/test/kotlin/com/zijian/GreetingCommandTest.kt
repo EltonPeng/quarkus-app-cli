@@ -3,6 +3,7 @@ package com.zijian
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import mu.KLogger
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.BeforeEach
 
@@ -16,11 +17,12 @@ internal class GreetingCommandTest {
 
     @Test
     fun run() {
-        every { logger.info(any<String>()) } just Runs
+        val slot = slot<() -> Any?>()
+        every { logger.info(capture(slot)) } just Runs
 
         val command = GreetingCommand(logger)
         command.run()
 
-        verify { logger.info ( "~~~~~~~~~~~~~~~~~~logging~~~~~~~~~~~~" ) }
+        Assertions.assertEquals("~~~~~~~~~~~~~~~~~~logging~~~~~~~~~~~~", slot.captured.invoke())
     }
 }

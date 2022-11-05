@@ -11,6 +11,6 @@ class GreetingCommand(
 
     override fun run() {
         System.out.printf("Yo bro, go go commando!\n")
-        logger.info("~~~~~~~~~~~~~~~~~~logging~~~~~~~~~~~~")
+        logger.info { "~~~~~~~~~~~~~~~~~~logging~~~~~~~~~~~~" }
     }
 }
