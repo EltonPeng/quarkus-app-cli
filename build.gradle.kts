@@ -22,6 +22,8 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("io.quarkus:quarkus-arc")
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.3")
+    implementation("io.quarkus:quarkus-rest-client")
+    implementation("io.quarkus:quarkus-rest-client-jackson")
     testImplementation("io.quarkus:quarkus-junit5")
     testImplementation("io.mockk:mockk:1.13.2")
     testImplementation("io.quarkiverse.mockk:quarkus-junit5-mockk:1.1.1")
