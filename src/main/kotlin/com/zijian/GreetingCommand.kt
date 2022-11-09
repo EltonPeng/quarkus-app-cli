@@ -9,8 +9,12 @@ class GreetingCommand(
     private val logger: KLogger = KotlinLogging.logger {}
 ) : Runnable {
 
+    @Inject
+    lateinit var putObjectService: PutObjectService
+
     override fun run() {
         System.out.printf("Yo bro, go go commando!\n")
+        putObjectService.put("aa")
         logger.info { "~~~~~~~~~~~~~~~~~~logging~~~~~~~~~~~~" }
     }
 }

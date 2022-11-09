@@ -24,6 +24,7 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.3")
     implementation("io.quarkus:quarkus-rest-client")
     implementation("io.quarkus:quarkus-rest-client-jackson")
+    implementation("io.quarkiverse.amazonservices:quarkus-amazon-s3:1.3.1")
     testImplementation("io.quarkus:quarkus-junit5")
     testImplementation("io.mockk:mockk:1.13.2")
     testImplementation("io.quarkiverse.mockk:quarkus-junit5-mockk:1.1.1")
