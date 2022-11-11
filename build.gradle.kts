@@ -16,15 +16,19 @@ val quarkusPlatformVersion: String by project
 
 dependencies {
     implementation(enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}"))
+    implementation(enforcedPlatform("${quarkusPlatformGroupId}:quarkus-amazon-services-bom:${quarkusPlatformVersion}"))
+
     implementation("io.quarkus:quarkus-picocli")
     implementation("io.quarkus:quarkus-kotlin")
-    implementation("io.quarkus:quarkus-container-image-jib")
+
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("io.quarkus:quarkus-arc")
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.3")
     implementation("io.quarkus:quarkus-rest-client")
     implementation("io.quarkus:quarkus-rest-client-jackson")
     implementation("io.quarkiverse.amazonservices:quarkus-amazon-s3:1.3.1")
+    implementation("software.amazon.awssdk:url-connection-client")
+    testImplementation("io.quarkus:quarkus-jacoco")
     testImplementation("io.quarkus:quarkus-junit5")
     testImplementation("io.mockk:mockk:1.13.2")
     testImplementation("io.quarkiverse.mockk:quarkus-junit5-mockk:1.1.1")
@@ -59,6 +63,7 @@ jacoco {
 
 tasks.test {
     finalizedBy(tasks.jacocoTestReport)
+    finalizedBy(tasks.jacocoTestCoverageVerification)
 }
 
 tasks.jacocoTestReport {
@@ -66,10 +71,16 @@ tasks.jacocoTestReport {
 }
 
 tasks.jacocoTestCoverageVerification {
+    executionData.setFrom(layout.buildDirectory.file("/jacoco/test.exec"))
     violationRules {
         rule {
             limit {
-                minimum = "0.5".toBigDecimal()
+                counter = "INSTRUCTION"
+                minimum = 0.90.toBigDecimal()
+            }
+            limit {
+                counter = "BRANCH"
+                minimum = 0.92.toBigDecimal()
             }
         }
     }
