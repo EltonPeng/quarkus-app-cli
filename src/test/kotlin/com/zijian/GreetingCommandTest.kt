@@ -31,6 +31,7 @@ internal class GreetingCommandTest {
             }
             else {
                 Assertions.assertNotNull(it.newInstance(logger, putObjectService, 0, null))
+                Assertions.assertNotNull(it.newInstance(logger, putObjectService, 1, null))
             }
         }
     }

@@ -38,7 +38,6 @@ internal class PutObjectServiceImplTest {
                 Assertions.assertNotNull(it.newInstance(logger, s3Client))
             }
             else {
-                val a =
                 assertNotNull(it.newInstance(logger, s3Client, 0, null))
                 assertNotNull(it.newInstance(logger, s3Client, 1, null))
             }
