@@ -7,6 +7,7 @@ import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.s3.model.PutObjectRequest
 import java.nio.file.Path
 import javax.enterprise.context.ApplicationScoped
+import kotlin.io.path.exists
 
 
 @ApplicationScoped
@@ -16,6 +17,11 @@ class PutObjectServiceImpl (
 ) : PutObjectService {
 
     override fun put(filePath: String) {
+        val path = Path.of(filePath)
+        if(!path.exists()) {
+            throw RuntimeException("file does not exist!")
+        }
+
         val putObjectRequest = PutObjectRequest.builder()
             .bucket("")
             .key("")
