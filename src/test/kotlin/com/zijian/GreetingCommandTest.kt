@@ -2,9 +2,11 @@ package com.zijian
 
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
+import io.quarkus.test.junit.QuarkusTest
 import mu.KLogger
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.lang.reflect.Constructor
 
@@ -21,10 +23,16 @@ internal class GreetingCommandTest {
 
     @Test
     fun `cover constructors`() {
-        val constructor: Constructor<GreetingCommand> = GreetingCommand::class.java.getDeclaredConstructor()
-        val command = constructor.newInstance()
-
-        Assertions.assertNotNull(command)
+        val constructors = GreetingCommand::class.java.constructors
+        Assertions.assertEquals(2, constructors.count())
+        constructors.forEach {
+            if(it.parameters.count() == 2){
+                Assertions.assertNotNull(it.newInstance(logger, putObjectService))
+            }
+            else {
+                Assertions.assertNotNull(it.newInstance(logger, putObjectService, 0, null))
+            }
+        }
     }
 
     @Test
@@ -33,8 +41,8 @@ internal class GreetingCommandTest {
         every { logger.info(capture(slot)) } just Runs
         every { putObjectService.put(any()) } just Runs
 
-        val command = GreetingCommand(logger)
-        command.putObjectService = putObjectService
+        val command = GreetingCommand(logger, putObjectService)
+//        command.putObjectService = putObjectService
         command.run()
 
         Assertions.assertEquals("~~~~~~~~~~~~~~~~~~logging~~~~~~~~~~~~", slot.captured.invoke())
