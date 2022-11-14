@@ -18,35 +18,40 @@ internal class GreetingCommandTest {
     @MockK
     private lateinit var putObjectService: PutObjectService
 
+    @MockK
+    private lateinit var tokenService: TokenService
+
     @BeforeEach
     fun setUp() = MockKAnnotations.init(this)
 
     @Test
     fun `cover constructors`() {
         val constructors = GreetingCommand::class.java.constructors
-        Assertions.assertEquals(2, constructors.count())
         constructors.forEach {
-            if(it.parameters.count() == 2){
-                Assertions.assertNotNull(it.newInstance(logger, putObjectService))
+            if(it.parameters.count() == 3){
+                Assertions.assertNotNull(it.newInstance(logger, tokenService, putObjectService))
             }
             else {
-                Assertions.assertNotNull(it.newInstance(logger, putObjectService, 0, null))
-                Assertions.assertNotNull(it.newInstance(logger, putObjectService, 1, null))
+                Assertions.assertNotNull(it.newInstance(logger, tokenService, putObjectService, 0, null))
+                Assertions.assertNotNull(it.newInstance(logger, tokenService, putObjectService, 1, null))
             }
         }
     }
 
     @Test
     fun run() {
+        val logMessages = mutableListOf<String>()
         val slot = slot<() -> Any?>()
-        every { logger.info(capture(slot)) } just Runs
+        every { logger.info(capture(slot)) } answers { logMessages.add(slot.captured.invoke().toString()) }
         every { putObjectService.put(any()) } just Runs
+        every { tokenService.get() } returns Token("you", "guess")
 
-        val command = GreetingCommand(logger, putObjectService)
-//        command.putObjectService = putObjectService
+
+        val command = GreetingCommand(logger, tokenService, putObjectService)
         command.run()
 
-        Assertions.assertEquals("~~~~~~~~~~~~~~~~~~logging~~~~~~~~~~~~", slot.captured.invoke())
+        Assertions.assertEquals("token is you", logMessages[0])
         verify { putObjectService.put(any()) }
+        Assertions.assertEquals("~~~~~~~~~~~~~~~~~~logging~~~~~~~~~~~~", logMessages[1])
     }
 }

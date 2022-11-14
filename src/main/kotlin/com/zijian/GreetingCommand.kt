@@ -7,11 +7,15 @@ import picocli.CommandLine.Command
 @Command(name = "greeting", mixinStandardHelpOptions = true)
 class GreetingCommand(
     private val logger: KLogger = KotlinLogging.logger {},
+    private val tokenService: TokenService,
     private val putObjectService: PutObjectService
 ) : Runnable {
 
     override fun run() {
         System.out.printf("Yo bro, go go commando!\n")
+        val token = tokenService.get()
+        logger.info { "token is ${token.accessToken}" }
+
         putObjectService.put("aa")
         logger.info { "~~~~~~~~~~~~~~~~~~logging~~~~~~~~~~~~" }
     }

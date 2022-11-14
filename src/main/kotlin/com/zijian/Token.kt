@@ -1,7 +1,7 @@
 package com.zijian
 
 class Token(
-    accessToken: String,
-    expiredIn: String
+    val accessToken: String,
+    val expiredIn: String
 ) {
 }
