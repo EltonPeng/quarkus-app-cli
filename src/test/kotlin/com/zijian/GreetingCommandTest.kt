@@ -2,13 +2,11 @@ package com.zijian
 
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
-import io.quarkus.test.junit.QuarkusTest
 import mu.KLogger
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import java.lang.reflect.Constructor
 
 internal class GreetingCommandTest {
 
@@ -29,11 +27,11 @@ internal class GreetingCommandTest {
         val constructors = GreetingCommand::class.java.constructors
         constructors.forEach {
             if(it.parameters.count() == 3){
-                Assertions.assertNotNull(it.newInstance(logger, tokenService, putObjectService))
+                assertNotNull(it.newInstance(logger, tokenService, putObjectService))
             }
             else {
-                Assertions.assertNotNull(it.newInstance(logger, tokenService, putObjectService, 0, null))
-                Assertions.assertNotNull(it.newInstance(logger, tokenService, putObjectService, 1, null))
+                assertNotNull(it.newInstance(logger, tokenService, putObjectService, 0, null))
+                assertNotNull(it.newInstance(logger, tokenService, putObjectService, 1, null))
             }
         }
     }
@@ -50,8 +48,8 @@ internal class GreetingCommandTest {
         val command = GreetingCommand(logger, tokenService, putObjectService)
         command.run()
 
-        Assertions.assertEquals("token is you", logMessages[0])
+        assertEquals("token is you", logMessages[0])
         verify { putObjectService.put(any()) }
-        Assertions.assertEquals("~~~~~~~~~~~~~~~~~~logging~~~~~~~~~~~~", logMessages[1])
+        assertEquals("~~~~~~~~~~~~~~~~~~logging~~~~~~~~~~~~", logMessages[1])
     }
 }

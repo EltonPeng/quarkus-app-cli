@@ -34,7 +34,7 @@ internal class PutObjectServiceImplTest {
         assertEquals(2, constructors.count())
         constructors.forEach {
             if(it.parameters.count() == 2){
-                Assertions.assertNotNull(it.newInstance(logger, s3Client))
+                assertNotNull(it.newInstance(logger, s3Client))
             }
             else {
                 assertNotNull(it.newInstance(logger, s3Client, 0, null))
@@ -60,7 +60,7 @@ internal class PutObjectServiceImplTest {
         ObjectMapper().writeValue(File("a.json"), null)
         service.put("a.json")
 
-        Assertions.assertEquals("~~~~~~~~~~~~~~~~~~S3 saving~~~~~~~~~~~~", slot.captured.invoke())
+        assertEquals("~~~~~~~~~~~~~~~~~~S3 saving~~~~~~~~~~~~", slot.captured.invoke())
     }
 
     @Test
