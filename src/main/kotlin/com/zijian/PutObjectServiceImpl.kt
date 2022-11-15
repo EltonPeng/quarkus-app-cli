@@ -7,14 +7,17 @@ import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.s3.model.PutObjectRequest
 import java.nio.file.Path
 import javax.enterprise.context.ApplicationScoped
+import javax.inject.Inject
 import kotlin.io.path.exists
 
 
 @ApplicationScoped
 class PutObjectServiceImpl (
-    private val logger: KLogger = KotlinLogging.logger {},
-    private val s3Client: S3Client
+    private val logger: KLogger = KotlinLogging.logger {}
 ) : PutObjectService {
+
+    @Inject
+    lateinit var s3Client: S3Client
 
     override fun put(filePath: String) {
         val path = Path.of(filePath)
