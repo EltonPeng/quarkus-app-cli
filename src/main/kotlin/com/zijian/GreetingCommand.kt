@@ -8,14 +8,9 @@ import javax.inject.Inject
 @Command(name = "greeting", mixinStandardHelpOptions = true)
 class GreetingCommand(
     private val logger: KLogger = KotlinLogging.logger {},
-    private val tokenService: TokenService
+    private val tokenService: TokenService, // can build and test but cannot run
+    private val putObjectService: PutObjectService = PutObjectServiceImpl()
 ) : Runnable {
-
-//    @Inject
-//    lateinit var tokenService: TokenService
-
-    @Inject
-    lateinit var putObjectService: PutObjectService
 
     override fun run() {
         System.out.printf("Yo bro, go go commando!\n")

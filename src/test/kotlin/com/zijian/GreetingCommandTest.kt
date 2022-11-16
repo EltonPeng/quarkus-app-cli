@@ -28,12 +28,12 @@ internal class GreetingCommandTest {
         constructors.forEach {
             if(it.parameters.isEmpty()) {
                 assertNotNull(it.newInstance())
-            } else if(it.parameters.count() == 2){
-                assertNotNull(it.newInstance(logger, tokenService))
+            } else if(it.parameters.count() == 3){
+                assertNotNull(it.newInstance(logger, tokenService, putObjectService))
             }
             else {
-                assertNotNull(it.newInstance(logger, tokenService, 0, null))
-                assertNotNull(it.newInstance(logger, tokenService, 1, null))
+                assertNotNull(it.newInstance(logger, tokenService, putObjectService, 0, null))
+                assertNotNull(it.newInstance(logger, tokenService, putObjectService, 1, null))
             }
         }
     }
@@ -47,9 +47,8 @@ internal class GreetingCommandTest {
         every { tokenService.get() } returns Token("you", "guess")
 
 
-        val command = GreetingCommand(logger, tokenService)
-//        command.tokenService = tokenService
-        command.putObjectService = putObjectService
+        val command = GreetingCommand(logger, tokenService, putObjectService)
+        //command.tokenService = tokenService
         command.run()
 
         assertEquals("token is you", logMessages[0])
