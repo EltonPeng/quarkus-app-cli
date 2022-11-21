@@ -26,6 +26,8 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.3")
     implementation("io.quarkus:quarkus-rest-client")
     implementation("io.quarkus:quarkus-rest-client-jackson")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.0")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.0")
     implementation("io.quarkiverse.amazonservices:quarkus-amazon-s3:1.3.1")
     implementation("software.amazon.awssdk:url-connection-client")
     implementation("com.squareup.moshi:moshi-kotlin:1.14.0")

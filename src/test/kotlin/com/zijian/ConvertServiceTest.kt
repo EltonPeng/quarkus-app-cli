@@ -15,4 +15,13 @@ internal class ConvertServiceTest {
 
         assertEquals("""{"accessToken":"a","expiredIn":"1970-01-01","tokenType":"Long"}""", output)
     }
+
+    @Test
+    fun goWithJackson() {
+        val convertService = ConvertService()
+        val token = Token("a", LocalDate.EPOCH, TokenType.Long)
+        val output = convertService.goWithJackson(token)
+
+        assertEquals("""{"accessToken":"a","expiredIn":"1970-01-01","tokenType":"Long"}""", output)
+    }
 }
