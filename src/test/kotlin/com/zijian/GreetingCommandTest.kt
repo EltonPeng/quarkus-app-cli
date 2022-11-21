@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.time.LocalDate
 
 internal class GreetingCommandTest {
 
@@ -15,6 +16,9 @@ internal class GreetingCommandTest {
 
     @MockK
     private lateinit var putObjectService: PutObjectService
+
+    @MockK
+    private lateinit var convertService: ConvertService
 
     @MockK
     private lateinit var tokenService: TokenService
@@ -28,12 +32,12 @@ internal class GreetingCommandTest {
         constructors.forEach {
             if(it.parameters.isEmpty()) {
                 assertNotNull(it.newInstance())
-            } else if(it.parameters.count() == 3){
-                assertNotNull(it.newInstance(logger, tokenService, putObjectService))
+            } else if(it.parameters.count() == 4){
+                assertNotNull(it.newInstance(logger, tokenService, convertService, putObjectService))
             }
             else {
-                assertNotNull(it.newInstance(logger, tokenService, putObjectService, 0, null))
-                assertNotNull(it.newInstance(logger, tokenService, putObjectService, 1, null))
+                assertNotNull(it.newInstance(logger, tokenService, convertService, putObjectService, 0, null))
+                assertNotNull(it.newInstance(logger, tokenService, convertService, putObjectService, 1, null))
             }
         }
     }
@@ -44,10 +48,11 @@ internal class GreetingCommandTest {
         val slot = slot<() -> Any?>()
         every { logger.info(capture(slot)) } answers { logMessages.add(slot.captured.invoke().toString()) }
         every { putObjectService.put(any()) } just Runs
-        every { tokenService.get() } returns Token("you", "guess")
+        every { convertService.go(any()) } returns ""
+        every { tokenService.get() } returns Token("you", LocalDate.EPOCH, TokenType.Temp)
 
 
-        val command = GreetingCommand(logger, tokenService, putObjectService)
+        val command = GreetingCommand(logger, tokenService, convertService, putObjectService)
         //command.tokenService = tokenService
         command.run()
 

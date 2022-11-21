@@ -9,6 +9,7 @@ import javax.inject.Inject
 class GreetingCommand(
     private val logger: KLogger = KotlinLogging.logger {},
     private val tokenService: TokenService, // can build and test but cannot run
+    private val convertService: ConvertService,
     private val putObjectService: PutObjectService = PutObjectServiceImpl()
 ) : Runnable {
 
@@ -17,6 +18,7 @@ class GreetingCommand(
         val token = tokenService.get()
         logger.info { "token is ${token.accessToken}" }
 
+        val fileContent = convertService.go(token)
         putObjectService.put("aa")
         logger.info { "~~~~~~~~~~~~~~~~~~logging~~~~~~~~~~~~" }
     }
