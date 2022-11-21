@@ -48,7 +48,7 @@ internal class GreetingCommandTest {
         val slot = slot<() -> Any?>()
         every { logger.info(capture(slot)) } answers { logMessages.add(slot.captured.invoke().toString()) }
         every { putObjectService.put(any()) } just Runs
-        every { convertService.go(any()) } returns ""
+        every { convertService.goWithMoshi(any()) } returns ""
         every { tokenService.get() } returns Token("you", LocalDate.EPOCH, TokenType.Temp)
 
 

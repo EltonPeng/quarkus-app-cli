@@ -28,6 +28,8 @@ dependencies {
     implementation("io.quarkus:quarkus-rest-client-jackson")
     implementation("io.quarkiverse.amazonservices:quarkus-amazon-s3:1.3.1")
     implementation("software.amazon.awssdk:url-connection-client")
+    implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
+
     testImplementation("io.quarkus:quarkus-jacoco")
     testImplementation("io.quarkus:quarkus-junit5")
     testImplementation("io.mockk:mockk:1.13.2")

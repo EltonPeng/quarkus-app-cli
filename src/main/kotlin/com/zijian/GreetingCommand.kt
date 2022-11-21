@@ -3,7 +3,6 @@ package com.zijian
 import mu.KLogger
 import mu.KotlinLogging
 import picocli.CommandLine.Command
-import javax.inject.Inject
 
 @Command(name = "greeting", mixinStandardHelpOptions = true)
 class GreetingCommand(
@@ -18,7 +17,7 @@ class GreetingCommand(
         val token = tokenService.get()
         logger.info { "token is ${token.accessToken}" }
 
-        val fileContent = convertService.go(token)
+        val fileContent = convertService.goWithMoshi(token)
         putObjectService.put("aa")
         logger.info { "~~~~~~~~~~~~~~~~~~logging~~~~~~~~~~~~" }
     }
