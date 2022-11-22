@@ -17,6 +17,19 @@ internal class ConvertServiceTest {
     }
 
     @Test
+    fun goListWithMoshi() {
+        val convertService = ConvertService()
+        val token1 = Token("a", LocalDate.EPOCH, TokenType.Long)
+        val token2 = Token("b", LocalDate.EPOCH, TokenType.Short)
+        val output = convertService.goListWithMoshi(listOf(token1, token2))
+
+        assertEquals(
+            """[{"accessToken":"a","expiredIn":"1970-01-01","tokenType":"Long"},{"accessToken":"b","expiredIn":"1970-01-01","tokenType":"Short"}]""",
+            output
+        )
+    }
+
+    @Test
     fun goWithJackson() {
         val convertService = ConvertService()
         val token = Token("a", LocalDate.EPOCH, TokenType.Long)
