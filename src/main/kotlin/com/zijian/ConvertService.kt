@@ -22,7 +22,7 @@ class ConvertService {
         val moshi = Moshi.Builder().add(LocalDateAdapter()).addLast(KotlinJsonAdapterFactory()).build()
         val jsonAdapter = moshi.adapter<List<Token>>()
 
-        return jsonAdapter.toJson(tokens)
+        return jsonAdapter.toJson(tokens.sortedBy { it.accessToken })
     }
 
     fun goWithJackson(token: Token): String {
