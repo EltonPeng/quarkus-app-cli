@@ -54,6 +54,21 @@ internal class ConvertServiceTest {
     }
 
     @Test
+    fun orderForTokenLengthDescAndTokenValueAsc() {
+        val convertService = ConvertService()
+        val token1 = Token("20", LocalDate.EPOCH, TokenType.Long, 3)
+        val token2 = Token("1", LocalDate.EPOCH, TokenType.Long)
+        val token3 = Token("2", LocalDate.EPOCH, TokenType.Long)
+        val output = convertService.goListWithMoshi(listOf(token3, token2, token1))
+
+        val longerTokenIndex = output.indexOf(""""accessToken":"200"""")
+        val smallerTokenIndex = output.indexOf(""""accessToken":"1"""")
+        val largerTokenIndex = output.indexOf(""""accessToken":"2"""")
+        assertTrue(longerTokenIndex < smallerTokenIndex)
+        assertTrue(smallerTokenIndex < largerTokenIndex)
+    }
+
+    @Test
     fun goWithJackson() {
         val convertService = ConvertService()
         val token = Token("1", LocalDate.EPOCH, TokenType.Long)
