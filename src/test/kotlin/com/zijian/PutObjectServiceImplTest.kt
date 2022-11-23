@@ -4,11 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import mu.KLogger
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.BeforeEach
 import software.amazon.awssdk.core.sync.RequestBody
 import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.s3.model.PutObjectRequest
@@ -27,6 +27,9 @@ internal class PutObjectServiceImplTest {
 
     @BeforeEach
     fun setUp() = MockKAnnotations.init(this)
+
+    @AfterEach
+    fun tearDown() = File("a.json").deleteOnExit()
 
     @Test
     fun `cover constructors`() {
