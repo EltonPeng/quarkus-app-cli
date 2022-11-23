@@ -3,9 +3,10 @@ package com.zijian
 import java.time.LocalDate
 
 class Token(
-    val accessToken: String,
+    var accessToken: String,
     val expiredIn: LocalDate,
-    val tokenType: TokenType
+    val tokenType: TokenType,
+    val finalLength: Int = 1
 )
 
 enum class TokenType {

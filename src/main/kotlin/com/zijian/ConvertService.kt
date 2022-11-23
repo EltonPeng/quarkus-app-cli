@@ -10,7 +10,7 @@ import com.zijian.utils.LocalDateAdapter
 
 class ConvertService {
 
-    fun goWithMoshi(token:Token): String {
+    fun goWithMoshi(token: Token): String {
         val moshi = Moshi.Builder().add(LocalDateAdapter()).addLast(KotlinJsonAdapterFactory()).build()
         val jsonAdapter = moshi.adapter(Token::class.java)
 
@@ -19,10 +19,14 @@ class ConvertService {
 
     @OptIn(ExperimentalStdlibApi::class)
     fun goListWithMoshi(tokens: List<Token>): String {
+        tokens.forEach { it.accessToken = it.accessToken.padEnd(it.finalLength, '0') }
         val moshi = Moshi.Builder().add(LocalDateAdapter()).addLast(KotlinJsonAdapterFactory()).build()
         val jsonAdapter = moshi.adapter<List<Token>>()
 
-        return jsonAdapter.toJson(tokens.sortedBy { it.accessToken })
+        val sortedList = tokens.sortedWith(Comparator.comparingInt<Token> { -it.accessToken.length }
+            .then(Comparator.comparingInt<Token> { it.accessToken.toInt() }))
+
+        return jsonAdapter.toJson(sortedList)
     }
 
     fun goWithJackson(token: Token): String {
