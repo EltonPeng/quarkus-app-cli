@@ -24,7 +24,14 @@ class ConvertService {
         val jsonAdapter = moshi.adapter<List<Token>>()
 
         val sortedList = tokens.sortedWith(Comparator.comparingInt<Token> { -it.accessToken.length }
-            .then(Comparator.comparingInt<Token> { it.accessToken.toInt() }))
+            .then { o1, o2 ->
+                if (o1.accessToken == o2.accessToken) {
+                    o2.accessToken.toInt().compareTo(o1.accessToken.toInt())
+                } else {
+                    o1.accessToken.toInt().compareTo(o2.accessToken.toInt())
+                }
+            })
+
 
         return jsonAdapter.toJson(sortedList)
     }
