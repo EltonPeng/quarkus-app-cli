@@ -10,21 +10,21 @@ internal class ConvertServiceTest {
     @Test
     fun goWithMoshi() {
         val convertService = ConvertService()
-        val token = Token("1", LocalDate.EPOCH, TokenType.Long)
+        val token = Token("1", "", LocalDate.EPOCH, TokenType.Long)
         val output = convertService.goWithMoshi(token)
 
-        assertEquals("""{"accessToken":"1","expiredIn":"1970-01-01","tokenType":"Long","finalLength":1}""", output)
+        assertEquals("""{"accessToken":"1","accessTokenUpper":"","expiredIn":"1970-01-01","tokenType":"Long","finalLength":1}""", output)
     }
 
     @Test
     fun goListWithMoshi() {
         val convertService = ConvertService()
-        val token1 = Token("1", LocalDate.EPOCH, TokenType.Long)
-        val token2 = Token("2", LocalDate.EPOCH, TokenType.Short)
+        val token1 = Token("1", "", LocalDate.EPOCH, TokenType.Long)
+        val token2 = Token("2", "", LocalDate.EPOCH, TokenType.Short)
         val output = convertService.goListWithMoshi(listOf(token1, token2))
 
         assertEquals(
-            """[{"accessToken":"1","expiredIn":"1970-01-01","tokenType":"Long","finalLength":1},{"accessToken":"2","expiredIn":"1970-01-01","tokenType":"Short","finalLength":1}]""",
+            """[{"accessToken":"1","accessTokenUpper":"","expiredIn":"1970-01-01","tokenType":"Long","finalLength":1},{"accessToken":"2","accessTokenUpper":"","expiredIn":"1970-01-01","tokenType":"Short","finalLength":1}]""",
             output
         )
     }
@@ -32,8 +32,8 @@ internal class ConvertServiceTest {
     @Test
     fun orderForTokenLengthDesc() {
         val convertService = ConvertService()
-        val token1 = Token("20", LocalDate.EPOCH, TokenType.Long, 3)
-        val token2 = Token("1", LocalDate.EPOCH, TokenType.Short)
+        val token1 = Token("20", "", LocalDate.EPOCH, TokenType.Long, 3)
+        val token2 = Token("1", "", LocalDate.EPOCH, TokenType.Short)
         val output = convertService.goListWithMoshi(listOf(token2, token1))
 
         val longerTokenIndex = output.indexOf(""""accessToken":"200"""")
@@ -44,8 +44,8 @@ internal class ConvertServiceTest {
     @Test
     fun orderForTokenValueAsc() {
         val convertService = ConvertService()
-        val token1 = Token("2", LocalDate.EPOCH, TokenType.Long)
-        val token2 = Token("1", LocalDate.EPOCH, TokenType.Short)
+        val token1 = Token("2", "", LocalDate.EPOCH, TokenType.Long)
+        val token2 = Token("1", "", LocalDate.EPOCH, TokenType.Short)
         val output = convertService.goListWithMoshi(listOf(token1, token2))
 
         val largerTokenIndex = output.indexOf(""""accessToken":"2"""")
@@ -54,11 +54,23 @@ internal class ConvertServiceTest {
     }
 
     @Test
+    fun orderForTokenRangeDesc() {
+        val convertService = ConvertService()
+        val token1 = Token("20", "", LocalDate.EPOCH, TokenType.Long, 3)
+        val token2 = Token("2", "", LocalDate.EPOCH, TokenType.Long, 3)
+        val output = convertService.goListWithMoshi(listOf(token1, token2))
+
+        val narrowTokenIndex = output.indexOf(""""accessToken":"209"""")
+        val wideTokenIndex = output.indexOf(""""accessToken":"299"""")
+        assertTrue(wideTokenIndex < narrowTokenIndex)
+    }
+
+    @Test
     fun orderForTokenLengthDescAndTokenValueAsc() {
         val convertService = ConvertService()
-        val token1 = Token("20", LocalDate.EPOCH, TokenType.Long, 3)
-        val token2 = Token("1", LocalDate.EPOCH, TokenType.Long)
-        val token3 = Token("2", LocalDate.EPOCH, TokenType.Long)
+        val token1 = Token("20", "", LocalDate.EPOCH, TokenType.Long, 3)
+        val token2 = Token("1", "", LocalDate.EPOCH, TokenType.Long)
+        val token3 = Token("2", "", LocalDate.EPOCH, TokenType.Long)
         val output = convertService.goListWithMoshi(listOf(token3, token2, token1))
 
         val longerTokenIndex = output.indexOf(""""accessToken":"200"""")
@@ -71,9 +83,9 @@ internal class ConvertServiceTest {
     @Test
     fun goWithJackson() {
         val convertService = ConvertService()
-        val token = Token("1", LocalDate.EPOCH, TokenType.Long)
+        val token = Token("1", "", LocalDate.EPOCH, TokenType.Long)
         val output = convertService.goWithJackson(token)
 
-        assertEquals("""{"accessToken":"1","expiredIn":"1970-01-01","tokenType":"Long","finalLength":1}""", output)
+        assertEquals("""{"accessToken":"1","accessTokenUpper":"","expiredIn":"1970-01-01","tokenType":"Long","finalLength":1}""", output)
     }
 }
