@@ -24,7 +24,7 @@ internal class ConvertServiceTest {
         val output = convertService.goListWithMoshi(listOf(token1, token2))
 
         assertEquals(
-            """[{"accessToken":"1","accessTokenUpper":"","expiredIn":"1970-01-01","tokenType":"Long","finalLength":1},{"accessToken":"2","accessTokenUpper":"","expiredIn":"1970-01-01","tokenType":"Short","finalLength":1}]""",
+            """[{"accessToken":"1","accessTokenUpper":"1","expiredIn":"1970-01-01","tokenType":"Long","finalLength":1},{"accessToken":"2","accessTokenUpper":"2","expiredIn":"1970-01-01","tokenType":"Short","finalLength":1}]""",
             output
         )
     }
@@ -60,8 +60,8 @@ internal class ConvertServiceTest {
         val token2 = Token("2", "", LocalDate.EPOCH, TokenType.Long, 3)
         val output = convertService.goListWithMoshi(listOf(token1, token2))
 
-        val narrowTokenIndex = output.indexOf(""""accessToken":"209"""")
-        val wideTokenIndex = output.indexOf(""""accessToken":"299"""")
+        val narrowTokenIndex = output.indexOf(""""accessTokenUpper":"209"""")
+        val wideTokenIndex = output.indexOf(""""accessTokenUpper":"299"""")
         assertTrue(wideTokenIndex < narrowTokenIndex)
     }
 

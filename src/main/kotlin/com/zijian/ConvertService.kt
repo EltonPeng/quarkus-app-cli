@@ -19,14 +19,18 @@ class ConvertService {
 
     @OptIn(ExperimentalStdlibApi::class)
     fun goListWithMoshi(tokens: List<Token>): String {
-        tokens.forEach { it.accessToken = it.accessToken.padEnd(it.finalLength, '0') }
+        tokens.forEach {
+            val originalToken = it.accessToken
+            it.accessToken = originalToken.padEnd(it.finalLength, '0')
+            it.accessTokenUpper = originalToken.padEnd(it.finalLength, '9')
+        }
         val moshi = Moshi.Builder().add(LocalDateAdapter()).addLast(KotlinJsonAdapterFactory()).build()
         val jsonAdapter = moshi.adapter<List<Token>>()
 
         val sortedList = tokens.sortedWith(Comparator.comparingInt<Token> { -it.accessToken.length }
             .then { o1, o2 ->
                 if (o1.accessToken == o2.accessToken) {
-                    o2.accessToken.toInt().compareTo(o1.accessToken.toInt())
+                    o2.accessTokenUpper.toInt().compareTo(o1.accessTokenUpper.toInt())
                 } else {
                     o1.accessToken.toInt().compareTo(o2.accessToken.toInt())
                 }
