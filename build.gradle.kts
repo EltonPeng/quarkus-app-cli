@@ -67,36 +67,26 @@ tasks.test {
 }
 
 kover {
-    // true to disable instrumentation and all Kover tasks in this project
     isDisabled.set(false)
 
-    // to change engine, use kotlinx.kover.api.IntellijEngine("xxx") or kotlinx.kover.api.JacocoEngine("xxx")
     engine.set(kotlinx.kover.api.DefaultIntellijEngine)
 
-    // common filters for all default Kover tasks
     filters {
-        // common class filter for all default Kover tasks in this project
-        classes {
-            // class inclusion rules
+       classes {
             includes += "com.zijian.*"
         }
     }
 
     instrumentation {
-        // set of test tasks names to exclude from instrumentation. The results of their execution will not be presented in the report
         excludeTasks += "dummy-tests"
     }
 
     htmlReport {
-        // set to true to run koverHtmlReport task during the execution of the check task (if it exists) of the current project
         onCheck.set(false)
 
-        // change report directory
         reportDir.set(layout.buildDirectory.dir("reports/kover-html-result"))
         overrideFilters {
-            // override common class filter
             classes {
-                // class inclusion rules
                 includes += "com.zijian.*"
             }
         }
