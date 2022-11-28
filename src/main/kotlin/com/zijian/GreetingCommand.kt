@@ -14,7 +14,7 @@ class GreetingCommand(
 
     override fun run() {
         System.out.printf("Yo bro, go go commando!\n")
-        val token = restClientFactory.getTokenRestClient().get()
+        val token = restClientFactory.getRestClient<TokenService>().get()
         logger.info { "token is ${token.accessToken}" }
 
         val fileContent = convertService.goWithMoshi(token)

@@ -3,6 +3,7 @@ package com.zijian
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import mu.KLogger
+import org.eclipse.microprofile.rest.client.RestClientBuilder
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
@@ -26,6 +27,9 @@ internal class GreetingCommandTest {
     @MockK
     private lateinit var restClientFactory: RestClientFactory
 
+    @MockK
+    private lateinit var restClientBuilder: RestClientBuilder
+
     @BeforeEach
     fun setUp() = MockKAnnotations.init(this)
 
@@ -33,12 +37,11 @@ internal class GreetingCommandTest {
     fun `cover constructors`() {
         val constructors = GreetingCommand::class.java.constructors
         constructors.forEach {
-            if(it.parameters.isEmpty()) {
+            if (it.parameters.isEmpty()) {
                 assertNotNull(it.newInstance())
-            } else if(it.parameters.count() == 4){
+            } else if (it.parameters.count() == 4) {
                 assertNotNull(it.newInstance(logger, restClientFactory, convertService, putObjectService))
-            }
-            else {
+            } else {
                 assertNotNull(it.newInstance(logger, restClientFactory, convertService, putObjectService, 0, null))
                 assertNotNull(it.newInstance(logger, restClientFactory, convertService, putObjectService, 1, null))
             }
@@ -53,8 +56,15 @@ internal class GreetingCommandTest {
         every { putObjectService.put(any()) } just Runs
         every { convertService.goWithMoshi(any()) } returns ""
         every { tokenService.get() } returns Token("you", "", LocalDate.EPOCH, TokenType.Temp)
-        every { restClientFactory.getTokenRestClient() } returns tokenService
 
+        mockkStatic(RestClientBuilder::class)
+        every { RestClientBuilder.newBuilder() } returns restClientBuilder
+        every { restClientBuilder.baseUri(any()) } returns restClientBuilder
+        every {
+            restClientBuilder.build(
+                Class.forName("com.zijian.TokenService")
+            )
+        } returns tokenService
 
         val command = GreetingCommand(logger, restClientFactory, convertService, putObjectService)
         //command.tokenService = tokenService
@@ -63,5 +73,7 @@ internal class GreetingCommandTest {
         assertEquals("token is you", logMessages[0])
         verify { putObjectService.put(any()) }
         assertEquals("~~~~~~~~~~~~~~~~~~logging~~~~~~~~~~~~", logMessages[1])
+
+        unmockkStatic(RestClientBuilder::class)
     }
 }
