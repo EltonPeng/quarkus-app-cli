@@ -23,6 +23,9 @@ internal class GreetingCommandTest {
     @MockK
     private lateinit var tokenService: TokenService
 
+    @MockK
+    private lateinit var restClientFactory: RestClientFactory
+
     @BeforeEach
     fun setUp() = MockKAnnotations.init(this)
 
@@ -33,11 +36,11 @@ internal class GreetingCommandTest {
             if(it.parameters.isEmpty()) {
                 assertNotNull(it.newInstance())
             } else if(it.parameters.count() == 4){
-                assertNotNull(it.newInstance(logger, tokenService, convertService, putObjectService))
+                assertNotNull(it.newInstance(logger, restClientFactory, convertService, putObjectService))
             }
             else {
-                assertNotNull(it.newInstance(logger, tokenService, convertService, putObjectService, 0, null))
-                assertNotNull(it.newInstance(logger, tokenService, convertService, putObjectService, 1, null))
+                assertNotNull(it.newInstance(logger, restClientFactory, convertService, putObjectService, 0, null))
+                assertNotNull(it.newInstance(logger, restClientFactory, convertService, putObjectService, 1, null))
             }
         }
     }
@@ -50,9 +53,10 @@ internal class GreetingCommandTest {
         every { putObjectService.put(any()) } just Runs
         every { convertService.goWithMoshi(any()) } returns ""
         every { tokenService.get() } returns Token("you", "", LocalDate.EPOCH, TokenType.Temp)
+        every { restClientFactory.getTokenRestClient() } returns tokenService
 
 
-        val command = GreetingCommand(logger, tokenService, convertService, putObjectService)
+        val command = GreetingCommand(logger, restClientFactory, convertService, putObjectService)
         //command.tokenService = tokenService
         command.run()
 
