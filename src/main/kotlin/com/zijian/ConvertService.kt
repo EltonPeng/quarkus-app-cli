@@ -17,6 +17,13 @@ class ConvertService {
         return jsonAdapter.toJson(token)
     }
 
+    fun moshiToObject(json: String): Token? {
+        val moshi = Moshi.Builder().add(LocalDateAdapter()).addLast(KotlinJsonAdapterFactory()).build()
+        val jsonAdapter = moshi.adapter(Token::class.java)
+
+        return jsonAdapter.fromJson(json)
+    }
+
     @OptIn(ExperimentalStdlibApi::class)
     fun goListWithMoshi(tokens: List<Token>): String {
         tokens.forEach {

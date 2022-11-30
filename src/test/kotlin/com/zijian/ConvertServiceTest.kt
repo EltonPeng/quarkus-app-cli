@@ -3,6 +3,7 @@ package com.zijian
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
+import java.io.EOFException
 import java.time.LocalDate
 
 internal class ConvertServiceTest {
@@ -14,6 +15,14 @@ internal class ConvertServiceTest {
         val output = convertService.goWithMoshi(token)
 
         assertEquals("""{"accessToken":"1","accessTokenUpper":"","expiredIn":"1970-01-01","tokenType":"Long","finalLength":1}""", output)
+    }
+
+    @Test
+    fun `moshi throw EOFException for empty string`() {
+        val convertService = ConvertService()
+        val json = ""
+
+        assertThrows(EOFException::class.java) { convertService.moshiToObject(json) }
     }
 
     @Test
