@@ -34,6 +34,14 @@ internal class ConvertServiceTest {
     }
 
     @Test
+    fun `moshi throw EOFException for invalid string`() {
+        val convertService = ConvertService()
+        val json = """{"accessToken":"1""""
+
+        assertThrows(EOFException::class.java) { convertService.moshiToObject(json) }
+    }
+
+    @Test
     fun goListWithMoshi() {
         val convertService = ConvertService()
         val token1 = Token("1", "", LocalDate.EPOCH, TokenType.Long)
