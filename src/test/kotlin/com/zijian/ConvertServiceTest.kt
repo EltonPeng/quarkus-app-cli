@@ -26,6 +26,14 @@ internal class ConvertServiceTest {
     }
 
     @Test
+    fun `moshi return null for string 'null'`() {
+        val convertService = ConvertService()
+        val json = "null"
+
+        assertNull(convertService.moshiToObject(json))
+    }
+
+    @Test
     fun goListWithMoshi() {
         val convertService = ConvertService()
         val token1 = Token("1", "", LocalDate.EPOCH, TokenType.Long)
