@@ -122,4 +122,13 @@ internal class ConvertServiceTest {
 
         assertThrows(MismatchedInputException::class.java) { convertService.jacksonToObject(json) }
     }
+
+    @Test
+    fun `jackson return null for string 'null'`() {
+        val convertService = ConvertService()
+        val json = "null"
+
+        assertThrows(NullPointerException::class.java) { convertService.jacksonToObject(json) }
+    }
+
 }
