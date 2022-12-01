@@ -1,5 +1,6 @@
 package com.zijian
 
+import com.fasterxml.jackson.databind.exc.MismatchedInputException
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
@@ -112,5 +113,13 @@ internal class ConvertServiceTest {
         val output = convertService.goWithJackson(token)
 
         assertEquals("""{"accessToken":"1","accessTokenUpper":"","expiredIn":"1970-01-01","tokenType":"Long","finalLength":1}""", output)
+    }
+
+    @Test
+    fun `jackson throw MismatchedInputException for empty string`() {
+        val convertService = ConvertService()
+        val json = ""
+
+        assertThrows(MismatchedInputException::class.java) { convertService.jacksonToObject(json) }
     }
 }

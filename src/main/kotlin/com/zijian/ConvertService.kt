@@ -53,4 +53,11 @@ class ConvertService {
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
         return mapper.writeValueAsString(token)
     }
+
+    fun jacksonToObject(json: String): Token {
+        val mapper = jacksonObjectMapper()
+        mapper.registerModule(JavaTimeModule())
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+        return mapper.readValue(json, Token::class.java)
+    }
 }
