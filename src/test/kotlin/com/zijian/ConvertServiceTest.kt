@@ -124,11 +124,18 @@ internal class ConvertServiceTest {
     }
 
     @Test
-    fun `jackson return null for string 'null'`() {
+    fun `jackson throw NullPointerException for string 'null'`() {
         val convertService = ConvertService()
         val json = "null"
 
         assertThrows(NullPointerException::class.java) { convertService.jacksonToObject(json) }
     }
 
+    @Test
+    fun `jackson throw EOFException for invalid string`() {
+        val convertService = ConvertService()
+        val json = """{"accessToken":"1""""
+
+        assertThrows(EOFException::class.java) { convertService.moshiToObject(json) }
+    }
 }
