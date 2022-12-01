@@ -1,6 +1,8 @@
 package com.zijian
 
+import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.exc.MismatchedInputException
+import com.squareup.moshi.JsonEncodingException
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
@@ -32,6 +34,14 @@ internal class ConvertServiceTest {
         val json = "null"
 
         assertNull(convertService.moshiToObject(json))
+    }
+
+    @Test
+    fun `moshi throw EOFException for string 'a'`() {
+        val convertService = ConvertService()
+        val json = "a"
+
+        assertThrows(JsonEncodingException::class.java) { convertService.moshiToObject(json) }
     }
 
     @Test
@@ -129,6 +139,14 @@ internal class ConvertServiceTest {
         val json = "null"
 
         assertThrows(NullPointerException::class.java) { convertService.jacksonToObject(json) }
+    }
+
+    @Test
+    fun `jackson throw JsonParseException for string 'a'`() {
+        val convertService = ConvertService()
+        val json = "a"
+
+        assertThrows(JsonParseException::class.java) { convertService.jacksonToObject(json) }
     }
 
     @Test
