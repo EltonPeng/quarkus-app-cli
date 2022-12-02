@@ -7,7 +7,9 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.zijian.utils.LocalDateAdapter
+import javax.enterprise.context.ApplicationScoped
 
+@ApplicationScoped
 class ConvertService {
 
     fun goWithMoshi(token: Token): String {
