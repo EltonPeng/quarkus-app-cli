@@ -23,7 +23,7 @@ dependencies {
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("io.quarkus:quarkus-arc")
-    implementation("io.github.microutils:kotlin-logging-jvm:3.0.3")
+    implementation("io.github.microutils:kotlin-logging-jvm:3.0.4")
     implementation("io.quarkus:quarkus-rest-client")
     implementation("io.quarkus:quarkus-rest-client-jackson")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.0")
