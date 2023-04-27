@@ -37,7 +37,7 @@ dependencies {
 
     testImplementation("io.quarkus:quarkus-jacoco")
     testImplementation("io.quarkus:quarkus-junit5")
-    testImplementation("io.mockk:mockk:1.13.4")
+    testImplementation("io.mockk:mockk:1.13.5")
     testImplementation("io.quarkiverse.mockk:quarkus-junit5-mockk:1.1.1")
 }
 
