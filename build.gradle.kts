@@ -31,7 +31,7 @@ dependencies {
     implementation("io.quarkus:quarkus-rest-client-jackson")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.0")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2")
-    implementation("io.quarkiverse.amazonservices:quarkus-amazon-s3:2.1.0")
+    implementation("io.quarkiverse.amazonservices:quarkus-amazon-s3:2.1.1")
     implementation("software.amazon.awssdk:url-connection-client")
     implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
 
